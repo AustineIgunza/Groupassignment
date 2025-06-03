@@ -1,0 +1,44 @@
+# This code follows the Interface Segregation Principle (ISP)
+# Classes only implement methods they actually use
+
+from abc import ABC, abstractmethod
+
+# Small, specific interfaces
+class Browsing(ABC):
+    @abstractmethod
+    def browse_books(self):
+        pass
+
+class Ordering(ABC):
+    @abstractmethod
+    def place_order(self):
+        pass
+
+class AdminActions(ABC):
+    @abstractmethod
+    def manage_users(self):
+        pass
+
+# Guest only browses books
+class Guest(Browsing):
+    def browse_books(self):
+        print("Guest is browsing books.")
+
+# Customer browses and places orders
+class Customer(Browsing, Ordering):
+    def browse_books(self):
+        print("Customer is browsing books.")
+
+    def place_order(self):
+        print("Customer placed an order.")
+
+# Admin can browse, place orders, and manage users
+class Admin(Browsing, Ordering, AdminActions):
+    def browse_books(self):
+        print("Admin is browsing books.")
+
+    def place_order(self):
+        print("Admin placed an order.")
+
+    def manage_users(self):
+        print("Admin managing users.")
