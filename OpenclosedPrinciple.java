@@ -1,41 +1,43 @@
-//A class, module, or function should be open for extension but closed for modification.
-from abc import ABC, abstractmethod
+public class OpenclosedPrinciple {
+//the following code followed the open/closed principle perfectly
+    // Base strategy interface
+    interface DiscountStrategy {
+        double applyDiscount(double total);
+    }
 
-# Base class - closed for modification, open for extension
-        class DiscountStrategy(ABC):
-        @abstractmethod
-        def apply_discount(self, total):
-        pass
+    // No discount
+    static class NoDiscount implements DiscountStrategy {
+        public double applyDiscount(double total) {
+            return total;
+        }
+    }
 
-        class NoDiscount(DiscountStrategy):
-        def apply_discount(self, total):
-        return total
+    // 10% discount
+    static class PercentageDiscount implements DiscountStrategy {
+        public double applyDiscount(double total) {
+            return total * 0.9;
+        }
+    }
 
-        class PercentageDiscount(DiscountStrategy):
-        def apply_discount(self, total):
-        return total * 0.9  # 10% discount
+    // Checkout uses strategy
+    static class Checkout {
+        private DiscountStrategy discountStrategy;
 
-        class Checkout:
-        def __init__(self, discount_strategy: DiscountStrategy):
-        self.discount_strategy = discount_strategy
+        public Checkout(DiscountStrategy discountStrategy) {
+            this.discountStrategy = discountStrategy;
+        }
 
-        def calculate_total(self, total):
-        return self.discount_strategy.apply_discount(total)
+        public double calculateTotal(double total) {
+            return discountStrategy.applyDiscount(total);
+        }
+    }
 
-        # Usage:
-        checkout1 = Checkout(NoDiscount())
-        print(checkout1.calculate_total(100))  # Output: 100
 
-        checkout2 = Checkout(PercentageDiscount())
-        print(checkout2.calculate_total(100))  # Output: 90
-//you can add new discounts hence it follows the principle
+    public static void main(String[] args) {
+        Checkout checkout1 = new Checkout(new NoDiscount());
+        System.out.println("No Discount: " + checkout1.calculateTotal(100));  // Output: 100.0
 
-//the following violates open/closd principle because adding a new discount requires modifying the calculate_total method,can introduce bugs
-        class Checkout:
-        def calculate_total(self, total, discount_type):
-        if discount_type == "none":
-        return total
-        elif discount_type == "percentage":
-        return total * 0.9
-        elif discount_type == "bogo":
-        return total / 2
+        Checkout checkout2 = new Checkout(new PercentageDiscount());
+        System.out.println("10% Discount: " + checkout2.calculateTotal(100)); // Output: 90.0
+    }
+}
