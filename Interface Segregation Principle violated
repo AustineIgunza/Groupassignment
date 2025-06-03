@@ -1,0 +1,34 @@
+# This code violates the Interface Segregation Principle (ISP)
+# Classes are forced to implement methods they don’t use
+
+class UserOperations:
+    def browse_books(self):
+        pass
+
+    def place_order(self):
+        pass
+
+    def manage_users(self):
+        pass
+
+# Guest is forced to implement all methods, even though it only needs one
+class Guest(UserOperations):
+    def browse_books(self):
+        print("Guest is browsing books.")
+
+    def place_order(self):
+        raise NotImplementedError("Guest can't place orders.")
+
+    def manage_users(self):
+        raise NotImplementedError("Guest can't manage users.")
+
+# Customer is also forced to implement admin-related methods
+class Customer(UserOperations):
+    def browse_books(self):
+        print("Customer is browsing books.")
+
+    def place_order(self):
+        print("Customer placed an order.")
+
+    def manage_users(self):
+        raise NotImplementedError("Customer can't manage users.")
