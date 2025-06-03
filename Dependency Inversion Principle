@@ -1,0 +1,51 @@
+//High-level modules should not depend on low-level modules. Both should depend on abstractions (e.g., interfaces).
+//Abstractions should not depend on details. Details should depend on abstractions.
+
+// High-level class depends on abstractions, not concrete classes
+
+// Abstraction for data service
+interface DataService {
+    void saveData();
+}
+
+// Abstraction for email service
+interface EmailService {
+    void sendEmail();
+}
+
+// Low-level implementations
+class MySQLDatabase implements DataService {
+    public void saveData() {
+        System.out.println("Saving data to MySQL database...");
+    }
+}
+
+class SMTPMailer implements EmailService {
+    public void sendEmail() {
+        System.out.println("Sending email using SMTP...");
+    }
+}
+
+// High-level module depends only on abstractions
+class App {
+    private final DataService dataService;
+    private final EmailService emailService;
+
+    public App(DataService dataService, EmailService emailService) {
+        this.dataService = dataService;
+        this.emailService = emailService;
+    }
+
+    public void run() {
+        dataService.saveData();
+        emailService.sendEmail();
+    }
+}
+
+// Usage
+public class DIPExample {
+    public static void main(String[] args) {
+        App app = new App(new MySQLDatabase(), new SMTPMailer());
+        app.run();  // Output: Saving data... Sending email...
+    }
+}

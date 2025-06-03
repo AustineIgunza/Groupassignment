@@ -1,0 +1,37 @@
+// High-level module depends directly on low-level concrete classes
+
+class Database {
+    public void saveData() {
+        System.out.println("Saving data to database...");
+    }
+}
+
+class Mail {
+    public void sendEmail() {
+        System.out.println("Sending email...");
+    }
+}
+
+// App is tightly coupled to concrete classes
+class App {
+    private Database database;
+    private Mail mail;
+
+    public App() {
+        this.database = new Database();  //  Hardcoded dependency
+        this.mail = new Mail();          //  Hardcoded dependency
+    }
+
+    public void run() {
+        database.saveData();
+        mail.sendEmail();
+    }
+}
+
+// Usage
+public class ViolatesDIP {
+    public static void main(String[] args) {
+        App app = new App();
+        app.run();  // Output: Saving data... Sending email...
+    }
+}
