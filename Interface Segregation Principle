@@ -1,4 +1,3 @@
-// Interfaces are split by responsibility
 interface Browsable {
     void browseBooks();
 }
@@ -11,14 +10,12 @@ interface AdminManageable {
     void manageUsers();
 }
 
-// Guest only browses books
 class Guest implements Browsable {
     public void browseBooks() {
         System.out.println("Guest is browsing books.");
     }
 }
 
-// Customer browses and places orders
 class Customer implements Browsable, Orderable {
     public void browseBooks() {
         System.out.println("Customer is browsing books.");
@@ -29,7 +26,6 @@ class Customer implements Browsable, Orderable {
     }
 }
 
-// Admin does everything
 class Admin implements Browsable, Orderable, AdminManageable {
     public void browseBooks() {
         System.out.println("Admin is browsing books.");
@@ -41,5 +37,21 @@ class Admin implements Browsable, Orderable, AdminManageable {
 
     public void manageUsers() {
         System.out.println("Admin managing users.");
+    }
+}
+
+public class ISPExample {
+    public static void main(String[] args) {
+        Guest guest = new Guest();
+        guest.browseBooks();
+
+        Customer customer = new Customer();
+        customer.browseBooks();
+        customer.placeOrder();
+
+        Admin admin = new Admin();
+        admin.browseBooks();
+        admin.placeOrder();
+        admin.manageUsers();
     }
 }
