@@ -1,29 +1,26 @@
-// One large interface with too many responsibilities
 interface UserOperations {
     void browseBooks();
     void placeOrder();
     void manageUsers();
 }
 
-// Guest is forced to implement unnecessary methods
-class Guest implements UserOperations {
+// Guest forced to implement unnecessary methods
+class GuestUser implements UserOperations {
     public void browseBooks() {
         System.out.println("Guest is browsing books.");
     }
 
     public void placeOrder() {
-        // Not applicable to guests
         throw new UnsupportedOperationException("Guest cannot place orders.");
     }
 
     public void manageUsers() {
-        // Not applicable to guests
         throw new UnsupportedOperationException("Guest cannot manage users.");
     }
 }
 
-// Customer also forced to implement manageUsers
-class Customer implements UserOperations {
+// Customer forced to implement manageUsers()
+class CustomerUser implements UserOperations {
     public void browseBooks() {
         System.out.println("Customer is browsing books.");
     }
@@ -33,7 +30,27 @@ class Customer implements UserOperations {
     }
 
     public void manageUsers() {
-        // Not applicable to customers
         throw new UnsupportedOperationException("Customer cannot manage users.");
+    }
+}
+
+public class ISPViolationExample {
+    public static void main(String[] args) {
+        GuestUser guest = new GuestUser();
+        guest.browseBooks();
+        try {
+            guest.placeOrder(); // Will throw an exception
+        } catch (UnsupportedOperationException e) {
+            System.out.println(e.getMessage());
+        }
+
+        CustomerUser customer = new CustomerUser();
+        customer.browseBooks();
+        customer.placeOrder();
+        try {
+            customer.manageUsers(); // Will throw an exception
+        } catch (UnsupportedOperationException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
