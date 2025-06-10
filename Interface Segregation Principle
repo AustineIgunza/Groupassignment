@@ -1,44 +1,45 @@
-# This code follows the Interface Segregation Principle (ISP)
-# Classes only implement methods they actually use
+// Interfaces are split by responsibility
+interface Browsable {
+    void browseBooks();
+}
 
-from abc import ABC, abstractmethod
+interface Orderable {
+    void placeOrder();
+}
 
-# Small, specific interfaces
-class Browsing(ABC):
-    @abstractmethod
-    def browse_books(self):
-        pass
+interface AdminManageable {
+    void manageUsers();
+}
 
-class Ordering(ABC):
-    @abstractmethod
-    def place_order(self):
-        pass
+// Guest only browses books
+class Guest implements Browsable {
+    public void browseBooks() {
+        System.out.println("Guest is browsing books.");
+    }
+}
 
-class AdminActions(ABC):
-    @abstractmethod
-    def manage_users(self):
-        pass
+// Customer browses and places orders
+class Customer implements Browsable, Orderable {
+    public void browseBooks() {
+        System.out.println("Customer is browsing books.");
+    }
 
-# Guest only browses books
-class Guest(Browsing):
-    def browse_books(self):
-        print("Guest is browsing books.")
+    public void placeOrder() {
+        System.out.println("Customer placed an order.");
+    }
+}
 
-# Customer browses and places orders
-class Customer(Browsing, Ordering):
-    def browse_books(self):
-        print("Customer is browsing books.")
+// Admin does everything
+class Admin implements Browsable, Orderable, AdminManageable {
+    public void browseBooks() {
+        System.out.println("Admin is browsing books.");
+    }
 
-    def place_order(self):
-        print("Customer placed an order.")
+    public void placeOrder() {
+        System.out.println("Admin placed an order.");
+    }
 
-# Admin can browse, place orders, and manage users
-class Admin(Browsing, Ordering, AdminActions):
-    def browse_books(self):
-        print("Admin is browsing books.")
-
-    def place_order(self):
-        print("Admin placed an order.")
-
-    def manage_users(self):
-        print("Admin managing users.")
+    public void manageUsers() {
+        System.out.println("Admin managing users.");
+    }
+}
