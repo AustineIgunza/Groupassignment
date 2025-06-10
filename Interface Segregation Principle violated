@@ -1,34 +1,39 @@
-# This code violates the Interface Segregation Principle (ISP)
-# Classes are forced to implement methods they don’t use
+// One large interface with too many responsibilities
+interface UserOperations {
+    void browseBooks();
+    void placeOrder();
+    void manageUsers();
+}
 
-class UserOperations:
-    def browse_books(self):
-        pass
+// Guest is forced to implement unnecessary methods
+class Guest implements UserOperations {
+    public void browseBooks() {
+        System.out.println("Guest is browsing books.");
+    }
 
-    def place_order(self):
-        pass
+    public void placeOrder() {
+        // Not applicable to guests
+        throw new UnsupportedOperationException("Guest cannot place orders.");
+    }
 
-    def manage_users(self):
-        pass
+    public void manageUsers() {
+        // Not applicable to guests
+        throw new UnsupportedOperationException("Guest cannot manage users.");
+    }
+}
 
-# Guest is forced to implement all methods, even though it only needs one
-class Guest(UserOperations):
-    def browse_books(self):
-        print("Guest is browsing books.")
+// Customer also forced to implement manageUsers
+class Customer implements UserOperations {
+    public void browseBooks() {
+        System.out.println("Customer is browsing books.");
+    }
 
-    def place_order(self):
-        raise NotImplementedError("Guest can't place orders.")
+    public void placeOrder() {
+        System.out.println("Customer placed an order.");
+    }
 
-    def manage_users(self):
-        raise NotImplementedError("Guest can't manage users.")
-
-# Customer is also forced to implement admin-related methods
-class Customer(UserOperations):
-    def browse_books(self):
-        print("Customer is browsing books.")
-
-    def place_order(self):
-        print("Customer placed an order.")
-
-    def manage_users(self):
-        raise NotImplementedError("Customer can't manage users.")
+    public void manageUsers() {
+        // Not applicable to customers
+        throw new UnsupportedOperationException("Customer cannot manage users.");
+    }
+}
